@@ -1,0 +1,30 @@
+id: test_migration_users
+label: 'User migration'
+description: 'Used for the content of user migration'
+migration_group: test_migration
+source:
+  plugin: csv
+  path: 'modules/custom/article_migrate/assets/csv/users.csv'
+  header_row_count: 1
+  keys:
+    - id
+  ids: [id]
+process:
+  name:
+    plugin: dedupe_entity
+    # The name of the source field containing the username.
+    source: username
+    # These next two settings identify the destination-side field to check for
+    # duplicates. They say "see if the incoming 'name' matches any existing
+    # 'name' field in any 'user' entity".
+    entity_type: user
+    field: name
+  mail: email
+  pass: password
+  status: active
+  roles: roles
+  field_first_name: firstname
+  field_last_name: lastname
+destination:
+  plugin: 'entity:user'
+

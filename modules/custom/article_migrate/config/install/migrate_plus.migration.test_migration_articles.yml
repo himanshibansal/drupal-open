@@ -1,0 +1,44 @@
+id: test_migration_articles
+label: 'Article migration'
+description: 'Used for the content of user migration'
+migration_group: test_migration
+source:
+  plugin: csv
+  path: 'modules/custom/article_migrate/assets/csv/articles_migrate.csv'
+  header_row_count: 1
+  keys:
+    - id
+  ids: [id]
+process:
+  title: title
+  body/value: body
+  body/format:
+    plugin: default_value
+    default_value: "full_html"
+  #used for assiging the user ID from the migration Map ID
+  uid:
+    plugin: migration_lookup
+    migration: test_migration_users
+    source: aid
+    no_stub: true
+  created:
+    plugin: format_date
+    source: created
+    from_format: 'Y-m-d'
+    to_format: 'U'
+  field_tags:
+    - plugin: explode
+      delimiter: ','
+      strict: false
+      source: tags
+    - plugin: log
+  type:
+    plugin: default_value
+    default_value: article
+destination:
+  plugin: entity:node
+  default_bundle: content
+migration_dependencies:
+  required:
+    - test_migration_users
+

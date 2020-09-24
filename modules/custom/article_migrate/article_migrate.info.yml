@@ -1,0 +1,15 @@
+type: module
+name: Article Migrate
+description: 'Used for Migration of articles & users'
+package: Custom
+core_version_requirement: ^8.8 || ^9
+dependencies:
+  - drupal:migrate
+  - migrate_source_csv:migrate_source_csv
+  - migrate_plus:migrate_plus
+  - migrate_tools:migrate_tools
+config_devel :
+  install :
+    - migrate_plus.migration_group.test_migration
+    - migrate_plus.migration.test_migration_users
+    - migrate_plus.migration.test_migration_articles
